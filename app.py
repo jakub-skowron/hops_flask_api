@@ -21,7 +21,7 @@ def get_hops_specification(hop_id: int):
     return jsonify({"Hop specification": hops[hop_id]})
     
 
-@app.route('/hops_list/add_new_hop', methods=["POST"])
+@app.route('/hops_list', methods=["POST"])
 def add_new_hop():
     hop = {
         'hop': request.json['hop'],
@@ -30,12 +30,12 @@ def add_new_hop():
     hops.append(hop)
     return jsonify({"Hops list": hops})
 
-@app.route('/hops_list/delete/<int:hop_id>', methods=["DELETE"])
+@app.route('/hops_list/<int:hop_id>', methods=["DELETE"])
 def delete_hop(hop_id: int):
     hops.pop(hop_id)
     return jsonify({"Hops list": hops})
 
-@app.route('/hops_list/update/<int:hop_id>', methods=["PUT"])
+@app.route('/hops_list/<int:hop_id>', methods=["PUT"])
 def update_hop(hop_id: int):
     hop = {
         'hop': request.json['hop'],
