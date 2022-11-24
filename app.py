@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
-from json import JSONEncoder
 import random
 
 '''
@@ -43,6 +42,19 @@ class Hop(db.Model):
         }
         return hop_dict
 
+#functions
+    
+def convert_to_unrepeatable(dicts_list):
+    change_set = set()
+    unrepeatable_list = []
+    for hop_dict in dicts_list:
+        change_tuple = tuple(hop_dict.items())
+        if change_tuple not in change_set:
+            change_set.add(change_tuple)
+            unrepeatable_list.append(hop_dict)
+    print(unrepeatable_list)
+    return unrepeatable_list
+
 #routes
 
 #all hops, or hops filtering by: name, useing for and typical beer styles 
@@ -52,13 +64,9 @@ def get_hops():
     name = request.args.get('name', None)
     used_for = request.args.get('used_for', default=None)
     beer_style = request.args.get('beer_style', default=None)
-    alpha_gt = request.args.get('alpha_gt', default=None)
-    alpha_lt = request.args.get('alpha_lt', default=None)
-    beta_gt = request.args.get('beta_gt', default=None)
-    beta_lt = request.args.get('beta_lt', default=None)
     result = []
     if name is not None:
-        hops = Hop.query.filter_by(name = name).first()
+        hop = Hop.query.filter_by(name = name).first()
         result.append(hop.as_dict())
     if used_for is not None:
         hops = Hop.query.filter_by(used_for = used_for).all()
@@ -74,6 +82,7 @@ def get_hops():
         hops = Hop.query.all()
         for hop in hops:
             result.append(hop.as_dict())
+    result = convert_to_unrepeatable(result)
     return jsonify(result)
 
 #hops filter by id
