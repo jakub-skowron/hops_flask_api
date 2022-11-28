@@ -71,13 +71,19 @@ def get_hops():
     if used_for is not None:
         hops = Hop.query.filter_by(used_for = used_for).all()
         for hop in hops:
-            result.append(hop.as_dict())
+            if hop.as_dict() in result:
+                pass
+            else:
+                result.append(hop.as_dict())
     if beer_style is not None:
         beer_style = beer_style.lower()
         hops = Hop.query.all()
         for hop in hops:
-            if beer_style in (hop.typical_beer_styles).lower():
-                result.append(hop.as_dict())
+            if hop.as_dict() in result:
+                pass
+            else:
+                if beer_style in (hop.typical_beer_styles).lower():
+                    result.append(hop.as_dict())
     if len(request.args) == 0:
         hops = Hop.query.all()
         for hop in hops:
