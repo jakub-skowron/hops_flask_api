@@ -42,55 +42,38 @@ class Hop(db.Model):
         }
         return hop_dict
 
-#functions
-    
-def convert_to_unrepeatable(dicts_list):
-    change_set = set()
-    unrepeatable_list = []
-    for hop_dict in dicts_list:
-        change_tuple = tuple(hop_dict.items())
-        if change_tuple not in change_set:
-            change_set.add(change_tuple)
-            unrepeatable_list.append(hop_dict)
-    print(unrepeatable_list)
-    return unrepeatable_list
-
 #routes
 
-#all hops, or hops filtering by: name, useing for and typical beer styles 
+#all hops, or hops filtering by: name, used for and typical beer styles 
 
 @app.route('/hops_list/', methods=["GET"])
 def get_hops():
-    name = request.args.get('name', None)
+    name = request.args.get('name', default=None)
     used_for = request.args.get('used_for', default=None)
     beer_style = request.args.get('beer_style', default=None)
     result = []
-    if name is not None:
-        hop = Hop.query.filter_by(name = name).first()
-        result.append(hop.as_dict())
-    if used_for is not None:
-        hops = Hop.query.filter_by(used_for = used_for).all()
-        for hop in hops:
-            if hop.as_dict() in result:
-                pass
-            else:
-                result.append(hop.as_dict())
-    if beer_style is not None:
-        beer_style = beer_style.lower()
-        hops = Hop.query.all()
-        for hop in hops:
-            if hop.as_dict() in result:
-                pass
-            else:
-                if beer_style in (hop.typical_beer_styles).lower():
-                    result.append(hop.as_dict())
+
     if len(request.args) == 0:
         hops = Hop.query.all()
         for hop in hops:
             result.append(hop.as_dict())
-    result = convert_to_unrepeatable(result)
-    return jsonify(result)
-
+        return jsonify(result)
+    
+    else:
+        params = [("name",name), ("used_for",used_for), ("typical_beer_styles",beer_style)]
+        hops = Hop.query.all()
+        for hop in hops:
+            hop_in_list = []
+            params_quant = 0
+            for param in params:
+                if param[1]:
+                    params_quant += 1
+                    if param[1] in hop.as_dict()[param[0]]:
+                        hop_in_list.append(hop.as_dict())
+            if params_quant == len(hop_in_list):
+                result.append(hop.as_dict())
+        return jsonify(result)  
+            
 #hops filter by id
 
 @app.route('/hops_list/<int:id>', methods=['GET'])
