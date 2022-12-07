@@ -6,10 +6,7 @@ API helps finding hops substitutes
 '''
 
 app = Flask(__name__)
-'''
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.db'
-'''
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:luLBk2hENxANvCtoXFgM@containers-us-west-159.railway.app:6143/railway"
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:R0sBil9ESOawSrXtdJ16@containers-us-west-103.railway.app:7001/railway"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'secret_key'
 
