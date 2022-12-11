@@ -13,7 +13,6 @@ app.config['SECRET_KEY'] = 'secret_key'
 db = SQLAlchemy(app)
 
 import routes
-db.create_all()
 
 if __name__ == "__main__":
     app.run()
