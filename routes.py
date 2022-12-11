@@ -52,7 +52,7 @@ def get_random_hops_description():
 
 #new hops
 
-@app.route('/hops_list', methods=["POST"])
+@app.route('/hops_list/', methods=["POST"])
 def add_new_hop():
     new_hop = Hop(
                 name=request.json["name"], 
