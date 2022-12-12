@@ -31,7 +31,7 @@ def get_hops():
                         param[1] = param[1].replace("_", " ")
                     if param[1].lower() in hop_param_from_db.lower():
                         hop_in_list.append(hop.as_dict())
-            if params_quant == len(hop_in_list):
+            if params_quant == len(hop_in_list) and params_quant != 0:
                 result.append(hop.as_dict())
         return jsonify(result)  
             
