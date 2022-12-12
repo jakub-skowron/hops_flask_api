@@ -8,6 +8,7 @@ def get_hops():
     name = request.args.get('name', default=None)
     used_for = request.args.get('used_for', default=None)
     beer_style = request.args.get('beer_style', default=None)
+    origin = request.args.get('origin', default=None)
     result = []
 
     if len(request.args) == 0:
@@ -17,7 +18,7 @@ def get_hops():
         return jsonify(result)
     
     else:
-        params = [("name",name), ("used_for",used_for), ("typical_beer_styles",beer_style)]
+        params = [["name",name], ["used_for",used_for], ["typical_beer_styles",beer_style], ["origin",origin]]
         hops = Hop.query.all()
         for hop in hops:
             hop_in_list = []
@@ -25,7 +26,10 @@ def get_hops():
             for param in params:
                 if param[1]:
                     params_quant += 1
-                    if param[1] in hop.as_dict()[param[0]]:
+                    hop_param_from_db = hop.as_dict()[param[0]]
+                    if "_" in param[1]:
+                        param[1] = param[1].replace("_", " ")
+                    if param[1].lower() in hop_param_from_db.lower():
                         hop_in_list.append(hop.as_dict())
             if params_quant == len(hop_in_list):
                 result.append(hop.as_dict())
