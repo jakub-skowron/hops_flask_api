@@ -6,11 +6,11 @@ class Hop(db.Model):
     alpha = db.Column(db.String(32))
     beta = db.Column(db.String(32))
     origin = db.Column(db.String(32))
-    description = db.Column(db.String(120))
-    aroma = db.Column(db.String(120))
-    typical_beer_styles = db.Column(db.String(120))
-    used_for = db.Column(db.String(120))
-    substitutions = db.Column(db.String(120))
+    description = db.Column(db.String(256))
+    aroma = db.Column(db.String(256))
+    typical_beer_styles = db.Column(db.String(256))
+    used_for = db.Column(db.String(32))
+    substitutions = db.Column(db.String(256))
 
     def as_dict(self):
         hop_dict = {
