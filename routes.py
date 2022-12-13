@@ -54,7 +54,7 @@ def get_random_hops_description():
     id = random.choice(output)
     hop = Hop.query.get(id)
     return jsonify(hop.as_dict())
-
+'''
 #new hops
 
 @app.route('/hops_list/', methods=["POST"])
@@ -82,3 +82,4 @@ def del_new_hop(id):
     db.session.delete(hop_to_del)
     db.session.commit()
     return jsonify({"deleted": "successfully"})
+'''
