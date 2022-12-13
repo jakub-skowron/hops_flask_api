@@ -7,7 +7,7 @@ from models import Hop
 def get_hops():
     name = request.args.get('name', default=None)
     used_for = request.args.get('used_for', default=None)
-    beer_style = request.args.get('beer_style', default=None)
+    beer_style = request.args.get("beer_style", default=None)
     origin = request.args.get('origin', default=None)
     result = []
 
@@ -16,7 +16,7 @@ def get_hops():
         for hop in hops:
             result.append(hop.as_dict())
         return jsonify(result)
-    
+
     else:
         params = [["name",name], ["used_for",used_for], ["typical_beer_styles",beer_style], ["origin",origin]]
         hops = Hop.query.all()
@@ -27,11 +27,12 @@ def get_hops():
                 if param[1]:
                     params_quant += 1
                     hop_param_from_db = hop.as_dict()[param[0]]
+                    print(hop_param_from_db)
                     if "_" in param[1]:
                         param[1] = param[1].replace("_", " ")
                     if param[1].lower() in hop_param_from_db.lower():
                         hop_in_list.append(hop.as_dict())
-            if params_quant == len(hop_in_list) and params_quant != 0:
+            if params_quant == len(hop_in_list) and len(hop_in_list) != 0:
                 result.append(hop.as_dict())
         return jsonify(result)  
             
