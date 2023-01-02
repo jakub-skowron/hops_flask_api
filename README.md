@@ -34,7 +34,7 @@ You can also join parameters:
 
 If you want to get one type of hop you can filtering it by id and use syntax as follow:
 
-`h$ curl hopsflaskapi-production.up.railway.app/hops_list/<id>`
+`$ curl hopsflaskapi-production.up.railway.app/hops_list/<id>`
 
 ### Random hop
 If you want to get random hop:
