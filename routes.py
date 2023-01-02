@@ -27,7 +27,6 @@ def get_hops():
                 if param[1]:
                     params_quant += 1
                     hop_param_from_db = hop.as_dict()[param[0]]
-                    print(hop_param_from_db)
                     if "_" in param[1]:
                         param[1] = param[1].replace("_", " ")
                     if param[1].lower() in hop_param_from_db.lower():

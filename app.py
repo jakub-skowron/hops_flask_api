@@ -8,7 +8,7 @@ API helps finding hops substitutes
 
 app = Flask(__name__)
 CORS(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:L1Fau2nYeHkBAKUqfYwp@containers-us-west-148.railway.app:7554/railway"
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:0pewd52oUeMIIQhvC5bb@containers-us-west-148.railway.app:7554/railway"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'secret_key'
 
