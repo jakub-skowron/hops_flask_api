@@ -1,9 +1,11 @@
 # HOPS FLASK API
 
-# v.0.9
-
+# v.1.0
 ### The root endpoint:
 `hopsflaskapi-production.up.railway.app`
+
+### Pagination:
+Data is paginated default to 20 hops per 1 page. To get data from other page you can use parameter `?page` and set chosen value.You can change pagination by use special parameter `?per_page`.
 
 ### Parameters:
 If you want to get all hops from the database you need to use:
@@ -41,6 +43,10 @@ If you want to get random hop:
 
 `$ curl hopsflaskapi-production.up.railway.app/hops_list/random`
 
+### Rate limits:
+Rate limit is set to 10 requests per 1 minute.
+You can check what the rate limit is and how many requests are remaining by looking at the rate limit headers sent in the response. 
+
 ### Response example:
 - Request:
 
@@ -63,10 +69,8 @@ If you want to get random hop:
 }
 ```
 
-### What I want to add in v.1.0 and later?
+### What I want to add in v.1.1 and later?
 Priority:
-- Rate Limits,
-- Pagination.
 - More filtering options,
 - Improvement of data quality.
 

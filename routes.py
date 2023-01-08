@@ -1,24 +1,24 @@
 import random
 from flask import request, jsonify
-from app import app, db
+from app import app
 from models import Hop
 
-@app.route('/hops_list/', methods=["GET"])
+@app.route('/hops_list/', methods=['GET'])
 def get_hops():
+    page = request.args.get('page', 1, type=int)
+    per_page = request.args.get('per_page', 20, type=int)
     name = request.args.get('name', default=None)
     used_for = request.args.get('used_for', default=None)
-    beer_style = request.args.get("beer_style", default=None)
+    beer_style = request.args.get('beer_style', default=None)
     origin = request.args.get('origin', default=None)
     result = []
-
-    if len(request.args) == 0:
-        hops = Hop.query.all()
+    if page != 0 or per_page != 0 or len(request.args) == 0:
+        hops = Hop.query.paginate(page=page,per_page=per_page)
         for hop in hops:
             result.append(hop.as_dict())
         return jsonify(result)
-
     else:
-        params = [["name",name], ["used_for",used_for], ["typical_beer_styles",beer_style], ["origin",origin]]
+        params = [['name',name], ['used_for',used_for], ['typical_beer_styles',beer_style], ['origin',origin]]
         hops = Hop.query.all()
         for hop in hops:
             hop_in_list = []
@@ -56,7 +56,7 @@ def get_random_hops_description():
 '''
 #new hops
 
-@app.route('/hops_list/', methods=["POST"])
+@app.route('/hops_list/', methods=['POST'])
 def add_new_hop():
     new_hop = Hop(
                 name=request.json["name"], 
