@@ -3,6 +3,7 @@ from flask import request, jsonify
 from app import app
 from models import Hop
 
+
 @app.route('/hops_list/', methods=['GET'])
 def get_hops():
     page = request.args.get('page', 1, type=int)
@@ -40,7 +41,10 @@ def get_hops():
 @app.route('/hops_list/<int:id>', methods=['GET'])
 def get_hops_description(id):
     hop = Hop.query.get(id)
-    return jsonify(hop.as_dict())
+    if hop:
+        return jsonify(hop.as_dict())
+    else:
+        return jsonify(({"error":"hop not found"})), 400
 
 #random hops
 
@@ -53,6 +57,19 @@ def get_random_hops_description():
     id = random.choice(output)
     hop = Hop.query.get(id)
     return jsonify(hop.as_dict())
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return jsonify({f"error":"page not found"}), 404
+
+@app.errorhandler(405)
+def method_not_allowed(e):
+    return jsonify({f"error":"method not allowed"}), 405
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    return jsonify({f"error":"internal server error"}), 404
+
 '''
 #new hops
 
