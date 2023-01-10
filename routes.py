@@ -13,6 +13,7 @@ def get_hops():
     beer_style = request.args.get('beer_style', default=None)
     origin = request.args.get('origin', default=None)
     result = []
+
     if page != 0 or per_page != 0 or len(request.args) == 0:
         hops = Hop.query.paginate(page=page,per_page=per_page)
         for hop in hops:
@@ -23,16 +24,16 @@ def get_hops():
         hops = Hop.query.all()
         for hop in hops:
             hop_in_list = []
-            params_quant = 0
+            params_count = 0
             for param in params:
                 if param[1]:
-                    params_quant += 1
+                    params_count += 1
                     hop_param_from_db = hop.as_dict()[param[0]]
                     if "_" in param[1]:
                         param[1] = param[1].replace("_", " ")
                     if param[1].lower() in hop_param_from_db.lower():
                         hop_in_list.append(hop.as_dict())
-            if params_quant == len(hop_in_list) and len(hop_in_list) != 0:
+            if params_count == len(hop_in_list) and len(hop_in_list) != 0:
                 result.append(hop.as_dict())
         return jsonify(result)  
             
@@ -70,32 +71,3 @@ def method_not_allowed(e):
 def internal_server_error(e):
     return jsonify({f"error":"internal server error"}), 404
 
-'''
-#new hops
-
-@app.route('/hops_list/', methods=['POST'])
-def add_new_hop():
-    new_hop = Hop(
-                name=request.json["name"], 
-                alpha=request.json["alpha"], 
-                beta=request.json["beta"], 
-                origin=request.json["origin"], 
-                description=request.json["description"], 
-                aroma=request.json["aroma"], 
-                typical_beer_styles=request.json["typical_beer_styles"], 
-                used_for=request.json["used_for"], 
-                substitutions=request.json["substitutions"]
-                )
-    db.session.add(new_hop)
-    db.session.commit()
-    return jsonify(new_hop.as_dict())
-
-#delete hops
-
-@app.route('/hops_list/<int:id>', methods=["DELETE"])
-def del_new_hop(id):
-    hop_to_del = Hop.query.get(id)
-    db.session.delete(hop_to_del)
-    db.session.commit()
-    return jsonify({"deleted": "successfully"})
-'''
