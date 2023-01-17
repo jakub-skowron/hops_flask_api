@@ -4,15 +4,15 @@ from flask_cors import CORS
 from flask_limiter import Limiter,HEADERS
 from flask_limiter.util import get_remote_address
 
+
+
 '''
 API helps finding hops substitutes
 '''
 
 app = Flask(__name__)
+app.config.from_object('config.ProdConfig')
 CORS(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:0pewd52oUeMIIQhvC5bb@containers-us-west-148.railway.app:7554/railway"
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = 'secret_key'
 
 limiter = Limiter(app=app, 
                 key_func=get_remote_address, 
