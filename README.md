@@ -10,11 +10,11 @@ Data is paginated default to 20 hops per 1 page. To get data from other page you
 ### Parameters:
 If you want to get all hops from the database you need to use:
 
-`$ curl hopsflaskapi-production.up.railway.app/hops_list`
+`$ curl hopsflaskapi-production.up.railway.app/hops`
 
 To get and filter hops you can use some url parameters which you can find below:
 
-`$ curl hopsflaskapi-production.up.railway.app/hops_list?<parameter>=<value>`
+`$ curl hopsflaskapi-production.up.railway.app/hops?<parameter>=<value>`
 
 | Parameter       | Description |
 | :-----------|:-------------:|
@@ -25,23 +25,23 @@ To get and filter hops you can use some url parameters which you can find below:
 ***
 Important!
 
-You don't need to use complete value of parameter. For example you can use `.../hops_list?name=cit` instead `.../hops_list?name=Citra` and in your response you get all hops in the database where name value contains "cit"`.
+You don't need to use complete value of parameter. For example you can use `.../hops?name=cit` instead `.../hops?name=Citra` and in your response you get all hops in the database where name value contains "cit"`.
 
-Value of parameters are not case senstivie (for example `.../hops_list?name=CiTrA` = `.../hops_list?name=citra`).
+Value of parameters are not case senstivie (for example `.../hops?name=CiTrA` = `.../hops?name=citra`).
 
 ***
 You can also join parameters:
 
-`$ curl hopsflaskapi-production.up.railway.app/hops_list?<parameter1>=<value1>&<parameter2>=<value2>&<parameter3>=<value3>`
+`$ curl hopsflaskapi-production.up.railway.app/hops?<parameter1>=<value1>&<parameter2>=<value2>&<parameter3>=<value3>`
 
 If you want to get one type of hop you can filtering it by id and use syntax as follow:
 
-`$ curl hopsflaskapi-production.up.railway.app/hops_list/<id>`
+`$ curl hopsflaskapi-production.up.railway.app/hops/<id>`
 
 ### Random hop
 If you want to get random hop:
 
-`$ curl hopsflaskapi-production.up.railway.app/hops_list/random`
+`$ curl hopsflaskapi-production.up.railway.app/hops/random`
 
 ### Rate limits:
 Rate limit is set to 10 requests per 1 minute.
@@ -50,7 +50,7 @@ You can check what the rate limit is and how many requests are remaining by look
 ### Response example:
 - Request:
 
-`$ curl hopsflaskapi-production.up.railway.app/hops_list/1`
+`$ curl hopsflaskapi-production.up.railway.app/hops/1`
 
 - Response:
 

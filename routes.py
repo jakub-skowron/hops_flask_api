@@ -5,7 +5,7 @@ from app import app
 from models import Hop
 
 
-@app.route('/hops_list/', methods=['GET'])
+@app.route('/hops/', methods=['GET'])
 def get_hops():
 
     page = request.args.get('page', 1, type=int)
@@ -35,7 +35,7 @@ def get_hops():
 
 #hops filter by id
 
-@app.route('/hops_list/<int:id>', methods=['GET'])
+@app.route('/hops/<int:id>', methods=['GET'])
 def get_hops_description(id):
     hop = Hop.query.get(id)
     if hop:
@@ -45,7 +45,7 @@ def get_hops_description(id):
 
 #random hops
 
-@app.route('/hops_list/random', methods=['GET'])
+@app.route('/hops/random', methods=['GET'])
 def get_random_hops_description():
     hops = Hop.query.all()
     output = []
