@@ -2,7 +2,7 @@
 
 # v.1.0
 ### The root endpoint:
-`hopsflaskapi-production.up.railway.app`
+`https://hopsflaskapi-production.up.railway.app`
 
 ### Pagination:
 Data is paginated default to 20 hops per 1 page. To get data from other page you can use parameter `?page` and set chosen value.You can change pagination by use special parameter `?per_page`.
@@ -10,11 +10,11 @@ Data is paginated default to 20 hops per 1 page. To get data from other page you
 ### Parameters:
 If you want to get all hops from the database you need to use:
 
-`$ curl hopsflaskapi-production.up.railway.app/hops`
+`$ curl https://hopsflaskapi-production.up.railway.app/hops`
 
 To get and filter hops you can use some url parameters which you can find below:
 
-`$ curl hopsflaskapi-production.up.railway.app/hops?<parameter>=<value>`
+`$ curl https://hopsflaskapi-production.up.railway.app/hops?<parameter>=<value>`
 
 | Parameter       | Description |
 | :-----------|:-------------:|
@@ -32,16 +32,16 @@ Value of parameters are not case senstivie (for example `.../hops?name=CiTrA` = 
 ***
 You can also join parameters:
 
-`$ curl hopsflaskapi-production.up.railway.app/hops?<parameter1>=<value1>&<parameter2>=<value2>&<parameter3>=<value3>`
+`$ curl https://hopsflaskapi-production.up.railway.app/hops?<parameter1>=<value1>&<parameter2>=<value2>&<parameter3>=<value3>`
 
 If you want to get one type of hop you can filtering it by id and use syntax as follow:
 
-`$ curl hopsflaskapi-production.up.railway.app/hops/<id>`
+`$ curl https://hopsflaskapi-production.up.railway.app/hops/<id>`
 
 ### Random hop
 If you want to get random hop:
 
-`$ curl hopsflaskapi-production.up.railway.app/hops/random`
+`$ curl https://hopsflaskapi-production.up.railway.app/hops/random`
 
 ### Rate limits:
 Rate limit is set to 10 requests per 1 minute.
@@ -50,7 +50,7 @@ You can check what the rate limit is and how many requests are remaining by look
 ### Response example:
 - Request:
 
-`$ curl hopsflaskapi-production.up.railway.app/hops/1`
+`$ curl https://hopsflaskapi-production.up.railway.app/hops/1`
 
 - Response:
 
