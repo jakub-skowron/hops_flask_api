@@ -2,7 +2,7 @@ import random
 
 from flask import request, jsonify
 from app import app
-from models import Hop
+from .models import Hop
 
 
 @app.route('/hops/', methods=['GET'])
