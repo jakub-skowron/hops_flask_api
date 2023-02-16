@@ -1,6 +1,5 @@
-import json
-
 from app import db
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 class Hop(db.Model):
@@ -32,6 +31,12 @@ class Hop(db.Model):
         }
         return hop_dict
 
-    # def update(self, **kwargs):
-        
-#hop = Hop(id=1, name="Citra", alpha={"max": "10", "min": "12"}, beta={"max": "10", "min": "12"}, origin="US", description="Lorem...", aroma="citrus", beer_styles={"style": "ale"},used_for="bitterness", substitutions = "None")
+class User(db.Model):
+    __table__ = "users"
+
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(32))
+    password_hash = db.Column(db.String(32))
+
+    def hash_password(self, password):
+        self.password_hash = generate_password_hash(password)

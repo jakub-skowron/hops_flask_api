@@ -1,4 +1,4 @@
-import random, json
+import random
 
 from flask import request, jsonify
 from sqlalchemy.exc import IntegrityError
