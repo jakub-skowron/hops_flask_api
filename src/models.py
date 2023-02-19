@@ -1,4 +1,4 @@
-from app import db
+from app import db, app
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
@@ -7,7 +7,7 @@ class Hop(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(32), unique=True)
-    alpha = db.Column(db.String)
+    alpha = db.Column(db.JSON)
     beta = db.Column(db.JSON)
     origin = db.Column(db.String(32))
     description = db.Column(db.String(256))
@@ -27,16 +27,19 @@ class Hop(db.Model):
             "aroma": self.aroma,
             "beer_styles": self.beer_styles,
             "used_for": self.used_for,
-            "substitutions": self.substitutions
+            "substitutions": self.substitutions,
         }
         return hop_dict
 
 class User(db.Model):
-    __table__ = "users"
+    __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(32))
-    password_hash = db.Column(db.String(32))
+    email = db.Column(db.String(32), unique=True)
+    password = db.Column(db.String(32))
 
     def hash_password(self, password):
-        self.password_hash = generate_password_hash(password)
+        self.password = generate_password_hash(password)
+
+    def verify_password(self, password):
+        return check_password_hash(self.password, password)

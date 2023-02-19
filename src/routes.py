@@ -2,12 +2,38 @@ import random
 
 from flask import request, jsonify
 from sqlalchemy.exc import IntegrityError
+from flask_jwt_extended import create_access_token, jwt_required
 
 from app import app, db
-from .models import Hop
+from .models import Hop, User
 
+@app.route('/api/register/', methods=['POST'])
+def register():
+    email = request.json.get('email')
+    password = request.json.get('password')
+    if email is None or password is None:
+        return jsonify({'error message': 'Missing email or password'}), 400
+    if User.query.filter_by(email = email).first() is not None:
+        return jsonify({'error message': f'{request.json["email"]} is already register'}), 400
+    user = User(email = email, password = password)
+    user.hash_password(password)
+    db.session.add(user)
+    db.session.commit()
+    return jsonify({'message': 'User created'}), 201
 
-@app.route('/hops/', methods=['GET'])
+@app.route("/api/login/", methods=["POST"])
+def login():
+    email = request.json.get("email", None)
+    password = request.json.get("password", None)
+
+    user = User.query.filter_by(email=email).one_or_none()
+    if not user or not user.verify_password(password):
+        return jsonify({'message': 'Wrong username or password'}), 401
+
+    access_token = create_access_token(identity=email)
+    return jsonify(access_token=access_token)
+
+@app.route('/api/hops/', methods=['GET'])
 def get_hops():
     hops_list = []
     page = request.args.get('page', 1, type=int)
@@ -35,14 +61,16 @@ def get_hops():
     
     return jsonify(response), 200
 
-@app.route('/hops/', methods=['POST'])
+@app.route('/api/hops/', methods=['POST'])
+@jwt_required()
 def add_new_hop():
     new_hop = Hop(**request.json)
     db.session.add(new_hop)
     db.session.commit()
     return jsonify(new_hop.as_dict()), 201
 
-@app.route('/hops/<int:id>', methods=['PUT'])
+@app.route('/api/hops/<int:id>', methods=['PUT'])
+@jwt_required()
 def update_hop(id):
     hop = Hop.query.get(id)
     try:
@@ -54,16 +82,15 @@ def update_hop(id):
     except IntegrityError:
         return jsonify({"error message": f"You can't change name of this hop, beacuse {request.json['name']} already exists"})
 
-@app.route('/hops/<int:id>', methods=['DELETE'])
+@app.route('/api/hops/<int:id>', methods=['DELETE'])
+@jwt_required()
 def delete_hop(id):
     hop = Hop.query.get(id)
     db.session.delete(hop)
     db.session.commit()
     return jsonify({"message": "hop deleted"})
 
-#hops filter by id
-
-@app.route('/hops/<int:id>', methods=['GET'])
+@app.route('/api/hops/<int:id>', methods=['GET'])
 def get_hops_description(id):
     hop = Hop.query.get(id)
     if hop:
@@ -71,9 +98,7 @@ def get_hops_description(id):
     else:
         return jsonify(({"error message":"hop not found"})), 400
 
-#random hops
-
-@app.route('/hops/random', methods=['GET'])
+@app.route('/api/hops/random', methods=['GET'])
 def get_random_hops_description():
     hops = Hop.query.all()
     output = []

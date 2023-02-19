@@ -9,6 +9,7 @@ load_dotenv(path.join(basedir, '.env'))
 class Config:
     """Base config."""
     SECRET_KEY = environ.get('SECRET_KEY')
+    JWT_SECRET_KEY = environ.get('JWT_SECRET_KEY')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 class ProdConfig(Config):
