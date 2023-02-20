@@ -2,33 +2,25 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager
-from flask_swagger_ui import get_swaggerui_blueprint
+from flasgger import Swagger
+from src.config.swagger import swagger_config
 
-'''
-API helps finding hops substitutes
-'''
 
 app = Flask(__name__)
 app.config.from_object('config.DevConfig')
 
 jwt = JWTManager(app)
-
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-SWAGGER_URL = '/api/docs'
-API_URL = '/static/swagger.json'
-SWAGGER_BLUEPRINT = get_swaggerui_blueprint(
-    SWAGGER_URL,
-    API_URL,
-    config={
-        'app_name': 'Hops API'
-    }
-)
+from src.hops.hops import hops
+from src.auth.auth import auth
+from src import routes
 
-app.register_blueprint(SWAGGER_BLUEPRINT, url_prefix = SWAGGER_URL)
+app.register_blueprint(auth)
+app.register_blueprint(hops)
 
-import src.routes
+Swagger(app, config=swagger_config)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
