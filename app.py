@@ -15,7 +15,7 @@ migrate = Migrate(app, db)
 
 from src.hops.hops import hops
 from src.auth.auth import auth
-from src import routes
+from src import error_routes
 
 app.register_blueprint(auth)
 app.register_blueprint(hops)

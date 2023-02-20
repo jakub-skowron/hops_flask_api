@@ -11,7 +11,7 @@ from src.constants.http_responses_status_codes import (HTTP_200_OK, HTTP_201_CRE
 
 hops = Blueprint("hops", __name__, url_prefix="/api/v1/hops")
 
-@app.route('/api/hops/', methods=['GET'])
+@hops.get('/')
 def get_hops():
     hops_list = []
     page = request.args.get('page', 1, type=int)
@@ -39,7 +39,7 @@ def get_hops():
     
     return jsonify(response), HTTP_200_OK
 
-@app.route('/api/hops/', methods=['POST'])
+@hops.post('/')
 @jwt_required()
 def add_new_hop():
     new_hop = Hop(**request.json)
@@ -47,7 +47,7 @@ def add_new_hop():
     db.session.commit()
     return jsonify(new_hop.as_dict()), HTTP_201_CREATED
 
-@app.route('/api/hops/<int:id>', methods=['PUT'])
+@hops.put('/<int:id>/')
 @jwt_required()
 def update_hop(id):
     hop = Hop.query.get(id)
@@ -61,7 +61,7 @@ def update_hop(id):
     except IntegrityError:
         return jsonify({"error message": f"You can't change name of this hop, beacuse {request.json['name']} already exists"}), HTTP_409_CONFLICT
 
-@app.route('/api/hops/<int:id>', methods=['DELETE'])
+@hops.delete('/<int:id>/')
 @jwt_required()
 def delete_hop(id):
     hop = Hop.query.get(id)
@@ -69,7 +69,7 @@ def delete_hop(id):
     db.session.commit()
     return jsonify({"message": "hop deleted"}), HTTP_200_OK
 
-@app.route('/api/hops/<int:id>', methods=['GET'])
+@hops.get('/<int:id>/')
 def get_hops_description(id):
     hop = Hop.query.get(id)
     if hop:
@@ -77,7 +77,7 @@ def get_hops_description(id):
     else:
         return jsonify(({"error message":"hop not found"})), HTTP_404_NOT_FOUND
 
-@app.route('/api/hops/random', methods=['GET'])
+@hops.get('/random/')
 def get_random_hops_description():
     hops = Hop.query.all()
     output = []

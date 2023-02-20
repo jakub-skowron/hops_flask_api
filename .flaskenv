@@ -1,1 +1,1 @@
-export FLASK_DEBUG=True
+export FLASK_DEBUG=False

@@ -9,7 +9,7 @@ from src.constants.http_responses_status_codes import (HTTP_200_OK, HTTP_201_CRE
 
 auth = Blueprint("auth", __name__, url_prefix="/api/v1/auth")
 
-@auth.post('/register')
+@auth.post('/register/')
 def register():
     email = request.json.get('email')
     password = request.json.get('password')
@@ -26,7 +26,7 @@ def register():
     db.session.commit()
     return jsonify({'message': 'User created'}), HTTP_201_CREATED
 
-@auth.post('/login')
+@auth.post('/login/')
 @swag_from('./docs/login.yaml')
 def login():
     email = request.json.get('email', None)
@@ -44,11 +44,10 @@ def login():
         'user': {
             'refresh': refresh_token,
             'access': access_token,
-            'email': user.email
         }
     }), HTTP_200_OK
 
-@auth.get('/token/refresh')
+@auth.get('/token/refresh/')
 @jwt_required(refresh=True)
 def refresh_users_token():
     identity = get_jwt_identity()
