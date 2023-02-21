@@ -6,7 +6,7 @@
 
 `https://hopsflaskapi-production.up.railway.app`
 
-### Pagination
+### Pagination and something other
 
 Data is paginated default to 20 hops per 1 page. To get data from other page you can use parameter `?page` and set chosen value.You can change pagination by use special parameter `?per_page`.
 
