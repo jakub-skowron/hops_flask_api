@@ -1,13 +1,17 @@
 # HOPS FLASK API
 
 # v.1.0
-### The root endpoint:
+
+## The root endpoint
+
 `https://hopsflaskapi-production.up.railway.app`
 
-### Pagination:
+### Pagination
+
 Data is paginated default to 20 hops per 1 page. To get data from other page you can use parameter `?page` and set chosen value.You can change pagination by use special parameter `?per_page`.
 
-### Parameters:
+### Parameters
+
 If you want to get all hops from the database you need to use:
 
 `$ curl https://hopsflaskapi-production.up.railway.app/hops`
@@ -18,7 +22,7 @@ To get and filter hops you can use some url parameters which you can find below:
 
 | Parameter       | Description |
 | :-----------|:-------------:|
-| name     | returns hops by name 
+| name     | returns hops by name
 | used_for      | returns hops by purpose of use (aroma, bittering, all purpose) |
 | beer_style | returns hops by use in specific beer styles |
 | origin | returns hops by origin country |
@@ -39,15 +43,18 @@ If you want to get one type of hop you can filtering it by id and use syntax as 
 `$ curl https://hopsflaskapi-production.up.railway.app/hops/<id>`
 
 ### Random hop
+
 If you want to get random hop:
 
 `$ curl https://hopsflaskapi-production.up.railway.app/hops/random`
 
-### Rate limits:
-Rate limit is set to 10 requests per 1 minute.
-You can check what the rate limit is and how many requests are remaining by looking at the rate limit headers sent in the response. 
+### Rate limits
 
-### Response example:
+Rate limit is set to 10 requests per 1 minute.
+You can check what the rate limit is and how many requests are remaining by looking at the rate limit headers sent in the response.
+
+### Response example
+
 - Request:
 
 `$ curl https://hopsflaskapi-production.up.railway.app/hops/1`
@@ -70,14 +77,8 @@ You can check what the rate limit is and how many requests are remaining by look
 ```
 
 ### What I want to add in v.1.1 and later?
+
 Priority:
+
 - More filtering options,
 - Improvement of data quality.
-
-
-
-
-
-
-
-
