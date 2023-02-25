@@ -23,4 +23,4 @@ app.register_blueprint(hops)
 Swagger(app, config=swagger_config)
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
