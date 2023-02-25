@@ -14,3 +14,5 @@ responses:
     description: Information about the hop
   400:
     description: Bad request
+  404:
+    description: Hop not found

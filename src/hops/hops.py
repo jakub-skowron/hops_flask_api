@@ -12,8 +12,7 @@ from src.constants.http_responses_status_codes import (
     HTTP_201_CREATED,
     HTTP_202_ACCEPTED,
     HTTP_409_CONFLICT,
-    HTTP_404_NOT_FOUND,
-    HTTP_400_BAD_REQUEST
+    HTTP_404_NOT_FOUND
 )
 
 
@@ -55,11 +54,10 @@ def get_hops():
 @swag_from("./docs/post_hops.yaml")
 def add_new_hop():
 
+    new_hop = Hop(**request.json)
+    db.session.add(new_hop)
     try:
-        new_hop = Hop(**request.json)
-        db.session.add(new_hop)
         db.session.commit()
-        return jsonify(new_hop.as_dict()), HTTP_201_CREATED
     except IntegrityError:
         return (
             jsonify(
@@ -69,6 +67,8 @@ def add_new_hop():
             ),
             HTTP_409_CONFLICT,
         )
+    else:
+        return jsonify(new_hop.as_dict()), HTTP_201_CREATED
 
 
 
@@ -79,12 +79,11 @@ def add_new_hop():
 def update_hop(id):
     hop = Hop.query.get(id)
 
-    try:
-        for key, value in request.json.items():
-            setattr(hop, key, value)
-        db.session.commit()
-        return jsonify(hop.as_dict()), HTTP_202_ACCEPTED
 
+    for key, value in request.json.items():
+        setattr(hop, key, value)
+    try: 
+        db.session.commit()
     except IntegrityError:
         return (
             jsonify(
@@ -94,6 +93,8 @@ def update_hop(id):
             ),
             HTTP_409_CONFLICT,
         )
+    else:
+        return jsonify(hop.as_dict()), HTTP_202_ACCEPTED
 
 
 @hops.delete("/<int:id>/")
