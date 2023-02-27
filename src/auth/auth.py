@@ -1,4 +1,4 @@
-from flask import request, jsonify, Blueprint
+from flask import request, jsonify
 from flask_jwt_extended import (
     create_access_token,
     create_refresh_token,
@@ -7,7 +7,8 @@ from flask_jwt_extended import (
 )
 from flasgger import swag_from
 
-from app import db
+from src import db
+from src.auth import bp
 from src.auth.models import User
 from src.constants.http_responses_status_codes import (
     HTTP_200_OK,
@@ -18,10 +19,7 @@ from src.constants.http_responses_status_codes import (
 )
 
 
-auth = Blueprint("auth", __name__, url_prefix="/api/v1/auth")
-
-
-@auth.post("/register/")
+@bp.post("/register/")
 @swag_from("./docs/register.yaml")
 def register():
     email = request.json.get("email")
@@ -46,7 +44,7 @@ def register():
     return jsonify({"message": "User created"}), HTTP_201_CREATED
 
 
-@auth.post("/login/")
+@bp.post("/login/")
 @swag_from("./docs/login.yaml")
 def login():
     email = request.json.get("email", None)
@@ -73,7 +71,7 @@ def login():
     )
 
 
-@auth.get("/token/refresh/")
+@bp.get("/token/refresh/")
 @jwt_required(refresh=True)
 @swag_from("./docs/token_refresh.yaml")
 def refresh_users_token():

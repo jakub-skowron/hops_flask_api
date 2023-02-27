@@ -17,9 +17,6 @@ class Config:
 
 class ProdConfig(Config):
     SQLALCHEMY_DATABASE_URI = environ.get("PROD_DATABASE_URI")
-    # PG Secrets
-    PGPASSWORD = environ.get("PGPASSWORD")
-
 
 class DevConfig(Config):
-    SQLALCHEMY_DATABASE_URI = environ.get("DEV_DATABASE_URI")
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + path.join(basedir, 'database.db')

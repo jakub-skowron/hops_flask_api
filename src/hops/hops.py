@@ -1,12 +1,13 @@
 import random
 
-from flask import request, jsonify, Blueprint
+from flask import request, jsonify
 from sqlalchemy.exc import IntegrityError
 from flask_jwt_extended import jwt_required
 from flasgger import swag_from
 
-from app import db
+from src import db
 from src.hops.models import Hop
+from src.hops import bp
 from src.constants.http_responses_status_codes import (
     HTTP_200_OK,
     HTTP_201_CREATED,
@@ -16,10 +17,7 @@ from src.constants.http_responses_status_codes import (
 )
 
 
-hops = Blueprint("hops", __name__, url_prefix="/api/v1/hops")
-
-
-@hops.get("/")
+@bp.get("/")
 @swag_from("./docs/get_hops.yaml")
 def get_hops():
     hops_list = []
@@ -49,7 +47,7 @@ def get_hops():
     return jsonify(response), HTTP_200_OK
 
 
-@hops.post("/")
+@bp.post("/")
 @jwt_required()
 @swag_from("./docs/post_hops.yaml")
 def add_new_hop():
@@ -73,7 +71,7 @@ def add_new_hop():
 
 
 
-@hops.put("/<int:id>/")
+@bp.put("/<int:id>/")
 @jwt_required()
 @swag_from("./docs/put_hop_by_id.yaml")
 def update_hop(id):
@@ -97,7 +95,7 @@ def update_hop(id):
         return jsonify(hop.as_dict()), HTTP_202_ACCEPTED
 
 
-@hops.delete("/<int:id>/")
+@bp.delete("/<int:id>/")
 @jwt_required()
 @swag_from("./docs/delete_hop_by_id.yaml")
 def delete_hop(id):
@@ -107,7 +105,7 @@ def delete_hop(id):
     return jsonify({"message": "hop deleted"}), HTTP_200_OK
 
 
-@hops.get("/<int:id>/")
+@bp.get("/<int:id>/")
 @swag_from("./docs/get_hop_by_id.yaml")
 def get_hops_description(id):
     hop = Hop.query.get(id)
@@ -117,7 +115,7 @@ def get_hops_description(id):
         return jsonify(({"error message": "hop not found"})), HTTP_404_NOT_FOUND
 
 
-@hops.get("/random/")
+@bp.get("/random/")
 @swag_from("./docs/get_random_hop.yaml")
 def get_random_hops_description():
     hops = Hop.query.all()

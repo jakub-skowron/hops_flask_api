@@ -1,6 +1,6 @@
 from flask import jsonify
 
-from app import app
+from src.error_routes import bp
 from src.constants.http_responses_status_codes import (
     HTTP_404_NOT_FOUND,
     HTTP_405_METHOD_NOT_ALLOWED,
@@ -8,16 +8,16 @@ from src.constants.http_responses_status_codes import (
 )
 
 
-@app.errorhandler(404)
+@bp.errorhandler(404)
 def page_not_found(e):
     return jsonify({f"error": "page not found"}), 404
 
 
-@app.errorhandler(405)
+@bp.errorhandler(405)
 def method_not_allowed(e):
     return jsonify({f"error": "method not allowed"}), 405
 
 
-@app.errorhandler(500)
+@bp.errorhandler(500)
 def internal_server_error(e):
     return jsonify({f"error": "internal server error"}), 500
