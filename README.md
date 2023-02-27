@@ -33,11 +33,4 @@ Create your local database:
 >>> db.create_all()
  ```
 
-That's it! You can use Hops API on your local machine!
-
-
-
-
-
-
-
+That's it! You can use Hops API on your local machine by `python3 app.py` command in your terminal.
