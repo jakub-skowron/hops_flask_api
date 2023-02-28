@@ -1,0 +1,22 @@
+DELETE the hop by id 
+---
+tags:
+  - Hops
+parameters:
+  - in: header
+    name: Authorization
+    required: true
+    description: "Enter the token with the `Bearer` prefix, e.g. `Bearer <token>`"
+  - name: id
+    in: path
+    description: The ID of the hop
+    required: true
+    schema:
+      type: integer
+responses:  
+  200:
+    description: Successfuly deleted
+  401:
+    description: Fails to delete item due to authentication error
+  400:
+    description: Bad request

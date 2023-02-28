@@ -1,5 +1,4 @@
-from app import db
-from werkzeug.security import generate_password_hash, check_password_hash
+from src import db
 
 
 class Hop(db.Model):
@@ -7,12 +6,14 @@ class Hop(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(32), unique=True)
-    alpha = db.Column(db.String)
-    beta = db.Column(db.JSON)
+    alpha_max_percentage = db.Column(db.Integer, nullable=True)
+    alpha_min_percentage = db.Column(db.Integer, nullable=True)
+    beta_max_percentage = db.Column(db.Integer, nullable=True)
+    beta_min_percentage = db.Column(db.Integer, nullable=True)
     origin = db.Column(db.String(32))
     description = db.Column(db.String(256))
     aroma = db.Column(db.String(256))
-    beer_styles = db.Column(db.JSON)
+    beer_styles = db.Column(db.String(256))
     used_for = db.Column(db.String(32))
     substitutions = db.Column(db.String(256))
 
@@ -20,23 +21,15 @@ class Hop(db.Model):
         hop_dict = {
             "id": self.id,
             "name": self.name,
-            "alpha": self.alpha,
-            "beta": self.beta,
+            "alpha_max_percentage": self.alpha_max_percentage,
+            "alpha_min_percentage": self.alpha_min_percentage,
+            "beta_max_percentage": self.beta_max_percentage,
+            "beta_min_percentage": self.beta_min_percentage,
             "origin": self.origin,
             "description": self.description,
             "aroma": self.aroma,
             "beer_styles": self.beer_styles,
             "used_for": self.used_for,
-            "substitutions": self.substitutions
+            "substitutions": self.substitutions,
         }
         return hop_dict
-
-class User(db.Model):
-    __table__ = "users"
-
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(32))
-    password_hash = db.Column(db.String(32))
-
-    def hash_password(self, password):
-        self.password_hash = generate_password_hash(password)

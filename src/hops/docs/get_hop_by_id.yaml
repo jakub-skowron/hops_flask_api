@@ -1,0 +1,18 @@
+GET the hop by id 
+---
+tags:
+  - Hops
+parameters:
+  - name: id
+    in: path
+    description: The ID of the hop
+    required: true
+    schema:
+      type: integer
+responses:  
+  200:
+    description: Information about the hop
+  400:
+    description: Bad request
+  404:
+    description: Hop not found

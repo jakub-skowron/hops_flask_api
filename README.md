@@ -1,83 +1,36 @@
 # HOPS FLASK API
 
-# v.1.0
-### The root endpoint:
-`https://hopsflaskapi-production.up.railway.app`
+### Installation guide (local machine):
 
-### Pagination:
-Data is paginated default to 20 hops per 1 page. To get data from other page you can use parameter `?page` and set chosen value.You can change pagination by use special parameter `?per_page`.
+Install Python 3.10.6:
 
-### Parameters:
-If you want to get all hops from the database you need to use:
+- Download the Python 3.10.6 installer for your operating system from the official Python website: https://www.python.org/downloads/
+Run the installer and follow the prompts to complete the installation.
 
-`$ curl https://hopsflaskapi-production.up.railway.app/hops`
+Clone the repository:
 
-To get and filter hops you can use some url parameters which you can find below:
+- Open a terminal or command prompt window.
+Navigate to the directory where you want to store your Flask application.
+Clone the repository by running the command `git clone https://github.com/Jaqbek95/hops_flask_api.git`.
 
-`$ curl https://hopsflaskapi-production.up.railway.app/hops?<parameter>=<value>`
+Create a virtual environment:
 
-| Parameter       | Description |
-| :-----------|:-------------:|
-| name     | returns hops by name 
-| used_for      | returns hops by purpose of use (aroma, bittering, all purpose) |
-| beer_style | returns hops by use in specific beer styles |
-| origin | returns hops by origin country |
-***
-Important!
+- Open a terminal or command prompt window.
+Navigate to the root directory of your Flask application.
+Create a virtual environment by running the command `$ python -m venv venv`. This will create a new directory named `venv` in your project directory.
+Activate the virtual environment by running the command `source venv/bin/activate`.
 
-You don't need to use complete value of parameter. For example you can use `.../hops?name=cit` instead `.../hops?name=Citra` and in your response you get all hops in the database where name value contains "cit"`.
+Install packages from `requirements.txt`:
 
-Value of parameters are not case senstivie (for example `.../hops?name=CiTrA` = `.../hops?name=citra`).
+- Ensure that your virtual environment is active.
+Run the command `pip install -r requirements.txt` to install all the packages listed in the `requirements.txt` file.
 
-***
-You can also join parameters:
+Create your local database:
 
-`$ curl https://hopsflaskapi-production.up.railway.app/hops?<parameter1>=<value1>&<parameter2>=<value2>&<parameter3>=<value3>`
-
-If you want to get one type of hop you can filtering it by id and use syntax as follow:
-
-`$ curl https://hopsflaskapi-production.up.railway.app/hops/<id>`
-
-### Random hop
-If you want to get random hop:
-
-`$ curl https://hopsflaskapi-production.up.railway.app/hops/random`
-
-### Rate limits:
-Rate limit is set to 10 requests per 1 minute.
-You can check what the rate limit is and how many requests are remaining by looking at the rate limit headers sent in the response. 
-
-### Response example:
-- Request:
-
-`$ curl https://hopsflaskapi-production.up.railway.app/hops/1`
-
-- Response:
-
-```json
-{
-    "alpha": "8.0-11.0%",
-    "aroma": "Citrus,Floral,Tropical Fruit",
-    "beta": "6.0-7.0%",
-    "description": "Floral, tropical, and citrus (lemon, orange and grapefruit) characteristics",
-    "id": 1,
-    "name": "Amarillo®",
-    "origin": "American",
-    "substitutions": "Cascade, Centennial",
-    "typical_beer_styles": "American Amber,American Pale Ale,India Pale Ale,Porter,Stout",
-    "used_for": "Aroma"
-}
+- Open a terminal and run `flask shell`. Execute following code: 
 ```
+>>> from src import db
+>>> db.create_all()
+ ```
 
-### What I want to add in v.1.1 and later?
-Priority:
-- More filtering options,
-- Improvement of data quality.
-
-
-
-
-
-
-
-
+That's it! You can use Hops API on your local machine by `python3 app.py` command in your terminal.
