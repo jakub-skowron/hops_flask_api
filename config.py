@@ -13,10 +13,5 @@ class Config:
     JWT_SECRET_KEY = environ.get("JWT_SECRET_KEY")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SWAGGER = {"title": "Hops API", "uiversion": 3, "version": "1.0"}
-
-
-class ProdConfig(Config):
-    SQLALCHEMY_DATABASE_URI = environ.get("PROD_DATABASE_URI")
-
-class DevConfig(Config):
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + path.join(basedir, 'database.db')
+    SQLALCHEMY_DATABASE_URI = environ.get('DATABASE_URL') or \
+        'sqlite:///' + path.join(basedir, 'database.db')

@@ -4,7 +4,7 @@ from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager
 from flasgger import Swagger
 
-from config import DevConfig #has to be changed in production
+from config import Config
 from src.config.swagger import swagger_config
 
 
@@ -12,7 +12,7 @@ db = SQLAlchemy()
 migrate = Migrate()
 jwt = JWTManager()
 
-def create_app(config_class=DevConfig):
+def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
 
