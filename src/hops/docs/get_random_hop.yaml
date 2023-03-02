@@ -1,9 +1,0 @@
-GET the random hop 
----
-tags:
-  - Hops
-responses:  
-  200:
-    description: Information about the hop
-  400:
-    description: Bad request

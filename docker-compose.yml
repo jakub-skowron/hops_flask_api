@@ -1,0 +1,39 @@
+version: "3.8"
+services:
+  web:
+    build: web
+    restart: always
+    ports: 
+      - 5000:5000
+    environment:
+      - DEBUG=0
+    networks:
+      - hops_flask_network
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  
+  proxy:
+    build: proxy
+    restart: always
+    ports: 
+      - 80:80
+    networks:
+      - hops_flask_network
+
+  db:
+    image: postgres
+    restart: always
+    ports: 
+      - 5432
+    networks:
+      - hops_flask_network
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=hops
+networks:
+  hops_flask_network:
+
+volumes:
+  postgres_data:
+  
