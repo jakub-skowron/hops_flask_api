@@ -9,7 +9,7 @@ parameters:
       type: integer
     description: The page number
   - in: query
-    name: per_page
+    name: per-page
     schema:
       type: integer
     description: The amount of hops per page
@@ -19,22 +19,22 @@ parameters:
       type: string
     description: The hop name or part of the name
   - in: query
-    name: alpha_max_percentage
+    name: alpha-max-percentage
     schema:
       type: integer
     description: The percentage max value of alpha acids
   - in: query
-    name: alpha_min_percentage
+    name: alpha-min-percentage
     schema:
       type: integer
     description: The percentage min value of alpha acids
   - in: query
-    name: beta_max_percentage
+    name: beta-max-percentage
     schema:
       type: integer
     description: The percentage max value of beta acids
   - in: query
-    name: beta_min_percentage
+    name: beta-min-percentage
     schema:
       type: integer
     description: The percentage min value of beta acids
@@ -54,12 +54,12 @@ parameters:
       type: string
     description: The hop's aroma
   - in: query
-    name: beer_styles
+    name: beer-styles
     schema:
       type: string
     description: Possibility to search kind of hops by beer style which perfectly suits with it
   - in: query
-    name: used_for
+    name: used-for
     schema:
       type: string
     description: The hop's characteristic
