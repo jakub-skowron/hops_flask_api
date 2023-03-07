@@ -5,8 +5,6 @@ services:
     restart: always
     ports: 
       - 5000:5000
-    environment:
-      - DEBUG=0
     networks:
       - hops_flask_network
     volumes:
