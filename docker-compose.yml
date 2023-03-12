@@ -7,8 +7,6 @@ services:
       - 5000:5000
     networks:
       - hops_flask_network
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
   
   proxy:
     build: proxy
@@ -29,6 +27,8 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=hops
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 networks:
   hops_flask_network:
 

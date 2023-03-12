@@ -15,7 +15,7 @@ from src.constants.http_responses_status_codes import (
     HTTP_201_CREATED,
     HTTP_400_BAD_REQUEST,
     HTTP_401_UNAUTHORIZED,
-    HTTP_409_CONFLICT
+    HTTP_409_CONFLICT,
 )
 
 
@@ -33,7 +33,7 @@ def register():
 
     if User.query.filter_by(email=email).first() is not None:
         return (
-            jsonify({"error message": "This email is already used"}),
+            jsonify({"error message": "Wrong username or password"}),
             HTTP_409_CONFLICT,
         )
 
