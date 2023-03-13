@@ -7,6 +7,10 @@ services:
       - 5000:5000
     networks:
       - hops_flask_network
+    volumes:
+      - ./web:/app
+    environment:
+      - DEBUG=True
   
   proxy:
     build: proxy
@@ -20,7 +24,7 @@ services:
     image: postgres
     restart: always
     ports: 
-      - 5432
+      - 5432:5432
     networks:
       - hops_flask_network
     environment:
