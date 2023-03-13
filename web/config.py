@@ -11,7 +11,8 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SWAGGER = {"title": "Hops API", "uiversion": 3, "version": "1.0"}
     SQLALCHEMY_DATABASE_URI = environ.get("DATABASE_URL", "sqlite:///database.db")
-    DEBUG = environ.get("DEBUG")
+    DEBUG = environ.get("DEBUG", True)
+
 
 class TestingConfig(Config):
     TESTING = True
