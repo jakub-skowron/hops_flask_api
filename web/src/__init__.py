@@ -4,7 +4,7 @@ from flask_jwt_extended import JWTManager
 from flasgger import Swagger
 from flask_sqlalchemy import SQLAlchemy
 
-from config import ProductionConfig, DevelopmentConfig
+from config import TestingConfig, Config
 from src.config.swagger import swagger_config
 
 
@@ -13,7 +13,7 @@ migrate = Migrate()
 jwt = JWTManager()
 
 #Switch between ProductionConfig and DevelopmentConfig
-def create_app(config_class=ProductionConfig):
+def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
 
@@ -26,5 +26,9 @@ def create_app(config_class=ProductionConfig):
     
     for blueprint in blueprint_list:
         app.register_blueprint(blueprint)
+        
+    if config_class != TestingConfig:
+        with app.app_context():
+            db.create_all()
 
     return app
