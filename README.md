@@ -11,26 +11,38 @@ Clone the repository:
 
 - Open a terminal or command prompt window.
 Navigate to the directory where you want to store your Flask application.
-Clone the repository by running the command `git clone https://github.com/Jaqbek95/hops_flask_api.git`.
+Clone the repository by running the following: 
+```
+$ git clone https://github.com/Jaqbek95/hops_flask_api.git
+```
 
 Create a virtual environment:
 
 - Open a terminal or command prompt window.
 Navigate to the root directory of your Flask application.
-Create a virtual environment by running the command `$ python -m venv venv`. This will create a new directory named `venv` in your project directory.
-Activate the virtual environment by running the command `source venv/bin/activate`.
+Create a virtual environment and activate it by following:
+```
+$ python -m venv venv
+$ source venv/bin/activate
+```
 
 Install packages from `requirements.txt`:
 
-- Ensure that your virtual environment is active.
-Run the command `pip install -r requirements.txt` to install all the packages listed in the `requirements.txt` file.
+- Ensure that your virtual environment is active and install all packages by the following:
+```
+$ pip install -r requirements.txt
+```
 
 Create your local database:
 
-- Open a terminal and run `flask shell`. Execute following code: 
+- Open a terminal and execute the following code: 
 ```
+$ flask shell
 >>> from src import db
 >>> db.create_all()
  ```
 
-That's it! You can use Hops API on your local machine by `python3 app.py` command in your terminal.
+That's it! You can use Hops API on your local machine by running the following: 
+```
+$ python3 app.py
+```

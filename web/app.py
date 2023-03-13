@@ -1,4 +1,6 @@
+from os import environ
 from src import create_app
+
 
 app = create_app()
 

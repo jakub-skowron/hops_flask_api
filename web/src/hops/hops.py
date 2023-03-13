@@ -4,6 +4,7 @@ from flask import request, jsonify
 from sqlalchemy.exc import IntegrityError
 from flask_jwt_extended import jwt_required
 from flasgger import swag_from
+from werkzeug.datastructures import ImmutableMultiDict
 
 from src import db
 from src.hops.models import Hop
@@ -21,15 +22,29 @@ from src.constants.http_responses_status_codes import (
 @swag_from("./docs/get_hops.yaml")
 def get_hops():
     hops_list = []
-    page = request.args.get("page", 1, type=int)
-    per_page = request.args.get("per_page", 20, type=int)
+    #changing '-' to '_' from URL
+    updated_request_args = ImmutableMultiDict(
+        {key.replace('-', '_'): value for key, value in request.args.items()}
+        )
+    page = updated_request_args.get("page", 1, type=int)
+    per_page = updated_request_args.get("per_page", 20, type=int)
 
     hops = Hop.query
 
-    for key, value in request.args.items():
+    alpha_beta_acids_keys=[
+            "alpha_max_percentage", 
+            "alpha_min_percentage", 
+            "beta_max_percentage", 
+            "beta_min_percentage"
+            ]
+
+    for key, value in updated_request_args.items():
         if key in ["page", "per_page"]:
             continue
-        hops = hops.filter(getattr(Hop, key).ilike(f"%{value}%"))
+        if key in alpha_beta_acids_keys:
+            hops = hops.filter(getattr(Hop, key).like(f"{value}"))
+        else:
+            hops = hops.filter(getattr(Hop, key).ilike(f"%{value}%"))
 
     hops = hops.paginate(page=page, per_page=per_page, error_out=False)
 
