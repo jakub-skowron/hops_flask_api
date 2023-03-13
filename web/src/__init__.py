@@ -1,10 +1,10 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager
 from flasgger import Swagger
+from flask_sqlalchemy import SQLAlchemy
 
-from config import DevelopmentConfig
+from config import ProductionConfig, DevelopmentConfig
 from src.config.swagger import swagger_config
 
 
@@ -12,7 +12,8 @@ db = SQLAlchemy()
 migrate = Migrate()
 jwt = JWTManager()
 
-def create_app(config_class=DevelopmentConfig):
+#Switch between ProductionConfig and DevelopmentConfig
+def create_app(config_class=ProductionConfig):
     app = Flask(__name__)
     app.config.from_object(config_class)
 
@@ -21,12 +22,9 @@ def create_app(config_class=DevelopmentConfig):
     jwt.init_app(app)
     Swagger(app, config=swagger_config)
 
-    from src.blueprints import blueprints
+    from src.blueprints.blueprints import blueprint_list
     
-    for blueprint in blueprints.blueprint_list:
+    for blueprint in blueprint_list:
         app.register_blueprint(blueprint)
 
     return app
-
-import src.auth.models
-import src.hops.models

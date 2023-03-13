@@ -14,7 +14,7 @@ from src.constants.http_responses_status_codes import (
     HTTP_201_CREATED,
     HTTP_202_ACCEPTED,
     HTTP_409_CONFLICT,
-    HTTP_404_NOT_FOUND
+    HTTP_404_NOT_FOUND,
 )
 
 
@@ -22,21 +22,21 @@ from src.constants.http_responses_status_codes import (
 @swag_from("./docs/get_hops.yaml")
 def get_hops():
     hops_list = []
-    #changing '-' to '_' from URL
+    # changing '-' to '_' from URL
     updated_request_args = ImmutableMultiDict(
-        {key.replace('-', '_'): value for key, value in request.args.items()}
-        )
+        {key.replace("-", "_"): value for key, value in request.args.items()}
+    )
     page = updated_request_args.get("page", 1, type=int)
     per_page = updated_request_args.get("per_page", 20, type=int)
 
     hops = Hop.query
 
-    alpha_beta_acids_keys=[
-            "alpha_max_percentage", 
-            "alpha_min_percentage", 
-            "beta_max_percentage", 
-            "beta_min_percentage"
-            ]
+    alpha_beta_acids_keys = [
+        "alpha_max_percentage",
+        "alpha_min_percentage",
+        "beta_max_percentage",
+        "beta_min_percentage",
+    ]
 
     for key, value in updated_request_args.items():
         if key in ["page", "per_page"]:
@@ -66,7 +66,6 @@ def get_hops():
 @jwt_required()
 @swag_from("./docs/post_hops.yaml")
 def add_new_hop():
-
     new_hop = Hop(**request.json)
     db.session.add(new_hop)
     try:
@@ -84,18 +83,15 @@ def add_new_hop():
         return jsonify(new_hop.as_dict()), HTTP_201_CREATED
 
 
-
-
 @bp.put("/<int:id>/")
 @jwt_required()
 @swag_from("./docs/put_hop_by_id.yaml")
 def update_hop(id):
     hop = Hop.query.get(id)
 
-
     for key, value in request.json.items():
         setattr(hop, key, value)
-    try: 
+    try:
         db.session.commit()
     except IntegrityError:
         return (

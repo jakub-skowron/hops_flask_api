@@ -8,16 +8,16 @@ from src.constants.http_responses_status_codes import (
 )
 
 
-@bp.errorhandler(404)
-def page_not_found(e):
-    return jsonify({f"error": "page not found"}), 404
+@bp.app_errorhandler(404)
+def page_not_found(error):
+    return jsonify({"error": "page not found"}), HTTP_404_NOT_FOUND
 
 
-@bp.errorhandler(405)
-def method_not_allowed(e):
-    return jsonify({f"error": "method not allowed"}), 405
+@bp.app_errorhandler(405)
+def method_not_allowed(error):
+    return jsonify({"error": "method not allowed"}), HTTP_405_METHOD_NOT_ALLOWED
 
 
-@bp.errorhandler(500)
-def internal_server_error(e):
-    return jsonify({f"error": "internal server error"}), 500
+@bp.app_errorhandler(500)
+def internal_server_error(error):
+    return jsonify({"error": "internal server error"}), HTTP_500_INTERNAL_SERVER_ERROR
