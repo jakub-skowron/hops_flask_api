@@ -7,7 +7,7 @@ parameters:
     name: Authorization
     required: true
 responses:
-  201:
+  200:
     description: New token
 
   401:

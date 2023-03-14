@@ -25,7 +25,7 @@ def register():
     email = request.json.get("email")
     password = request.json.get("password")
 
-    if email is None or password is None:
+    if email is '' or password is '':
         return (
             jsonify({"error message": "Missing email or password"}),
             HTTP_400_BAD_REQUEST,
@@ -33,8 +33,8 @@ def register():
 
     if User.query.filter_by(email=email).first() is not None:
         return (
-            jsonify({"error message": "Wrong username or password"}),
-            HTTP_409_CONFLICT,
+            jsonify({"error message": "Wrong email or password"}),
+            HTTP_400_BAD_REQUEST,
         )
 
     user = User(email=email, password=password)
