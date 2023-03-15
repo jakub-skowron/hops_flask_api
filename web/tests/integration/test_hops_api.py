@@ -113,6 +113,7 @@ def test_add_hop_which_already_exists(test_client):
 
     assert response.status_code == 409
     assert response.headers["Content-Type"] == "application/json"
+    db.session.rollback()
 
 
 def test_get_all_hops(test_client):
@@ -150,6 +151,7 @@ def test_get_hop_by_id_with_invalid_id(test_client, id=5):
     response = test_client.get(f"{enpoint_prefix}/hops/{id}/")
     assert response.status_code == 404
     assert response.headers["Content-Type"] == "application/json"
+    db.session.rollback()
 
 
 def test_get_random_hop(test_client):
@@ -189,6 +191,7 @@ def test_update_hop_existed_name(test_client, id=1):
 
     assert response.status_code == 409
     assert response.headers["Content-Type"] == "application/json"
+    db.session.rollback()
 
 
 def test_delete_hop_with_valid_token(test_client, id=1):
