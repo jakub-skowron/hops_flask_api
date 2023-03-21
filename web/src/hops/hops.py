@@ -1,6 +1,6 @@
 import random
 
-from flask import request, jsonify
+from flask import request, jsonify, abort
 from sqlalchemy.exc import IntegrityError
 from flask_jwt_extended import jwt_required
 from flasgger import swag_from
@@ -15,6 +15,7 @@ from src.constants.http_responses_status_codes import (
     HTTP_202_ACCEPTED,
     HTTP_409_CONFLICT,
     HTTP_404_NOT_FOUND,
+    HTTP_500_INTERNAL_SERVER_ERROR
 )
 
 
@@ -123,16 +124,23 @@ def get_hops_description(id):
     if hop:
         return jsonify(hop.as_dict()), HTTP_200_OK
     else:
-        return jsonify(({"error message": "hop not found"})), HTTP_404_NOT_FOUND
+        abort(HTTP_404_NOT_FOUND)
 
 
 @bp.get("/random/")
 @swag_from("./docs/get_random_hop.yaml")
 def get_random_hops_description():
     hops = Hop.query.all()
+    if len(hops) == 0:
+        return jsonify({"meesage": "hops list is empty"}), HTTP_404_NOT_FOUND
     output = []
     for hop in hops:
         output.append(hop.id)
     id = random.choice(output)
     hop = Hop.query.get(id)
     return jsonify(hop.as_dict()), HTTP_200_OK
+
+
+@bp.get("/error/")
+def get_error_500():
+    abort(HTTP_500_INTERNAL_SERVER_ERROR)
