@@ -56,6 +56,12 @@ def test_client():
             db.drop_all()
 
 
+def test_get_random_hop_with_empty_hop_list(test_client):
+    response = test_client.get(f"{enpoint_prefix}/hops/random/")
+    assert response.status_code == 404
+    assert response.headers["Content-Type"] == "application/json"
+
+
 def test_add_new_hop_with_valid_token(test_client):
     access_token = get_access_token(test_client)
 
@@ -205,6 +211,12 @@ def test_delete_hop_with_valid_token(test_client, id=1):
     )
 
     assert response.status_code == 200
+    assert response.headers["Content-Type"] == "application/json"
+    
+
+def test_error_500(test_client):
+    response = test_client.get(f"{enpoint_prefix}/hops/error/")
+    assert response.status_code == 500
     assert response.headers["Content-Type"] == "application/json"
 
 
