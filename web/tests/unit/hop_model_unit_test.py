@@ -1,25 +1,10 @@
 import pytest
-
-from src import create_app, db
+from src import db
 from src.hops.models import Hop
-from config import TestingConfig
 
 
-@pytest.fixture(scope="module")
-def test_client():
-    flask_app = create_app(TestingConfig)
-
-    with flask_app.test_client() as test_client:
-        with flask_app.app_context():
-            db.create_all()
-            yield test_client
-
-            db.session.remove()
-            db.drop_all()
-
-
-def test_add_hop(test_client):
-    new_hop = Hop(
+def create_hop():
+    hop = Hop(
         name="test",
         alpha_max_percentage=12,
         alpha_min_percentage=10,
@@ -32,15 +17,41 @@ def test_add_hop(test_client):
         used_for="aroma",
         substitutions="test2",
     )
-    db.session.add(new_hop)
+    db.session.add(hop)
+    db.session.commit()
+    return hop
+
+
+@pytest.fixture
+def hop_in_db():
+    hop = create_hop()
+
+    yield hop
+
+    db.session.delete(hop)
     db.session.commit()
 
+
+def test_add_hop(test_client, hop_in_db):
+    expected_hop = Hop(
+        name="test",
+        alpha_max_percentage=12,
+        alpha_min_percentage=10,
+        beta_max_percentage=5,
+        beta_min_percentage=4,
+        origin="US",
+        description="Lorem ipsum...",
+        aroma="citrus",
+        beer_styles="IPA, Lager",
+        used_for="aroma",
+        substitutions="test2",
+    )
     hops = Hop.query.all()
     assert len(hops) == 1
-    assert hops[0].name == "test"
+    assert hops[0] == expected_hop
 
 
-def test_get_dict(test_client):
+def test_get_dict(test_client, hop_in_db):
     hop = Hop.query.get(1)
 
     assert hop.as_dict() == {
@@ -59,7 +70,7 @@ def test_get_dict(test_client):
     }
 
 
-def test_update_hop(test_client):
+def test_update_hop(test_client, hop_in_db):
     hop = Hop.query.get(1)
     hop.name = "test_update"
     hop.origin = "PL"
@@ -78,6 +89,7 @@ def test_update_hop(test_client):
 
 
 def test_delete_hop(test_client):
+    create_hop()
     hop = Hop.query.get(1)
     db.session.delete(hop)
     db.session.commit()
